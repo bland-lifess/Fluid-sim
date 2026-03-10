@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Fluid Sim</title>
+<title>Fluid Sim - Fixed</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -18,61 +17,60 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;touch-ac
 
 #panel{
 position:fixed;top:0;right:0;width:270px;height:100%;
-background:var(–panel);border-left:1px solid var(–border);
+background:var(--panel);border-left:1px solid var(--border);
 backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
 display:flex;flex-direction:column;z-index:10;
 transition:transform .3s cubic-bezier(.77,0,.18,1);
 }
 #panel.hidden{transform:translateX(100%)}
-#ph{padding:16px 16px 12px;border-bottom:1px solid var(–border);flex-shrink:0}
-#ph h1{font-family:‘Space Mono’,monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(–accent);margin-bottom:2px}
-#ph p{font-size:10px;color:var(–muted)}
-#pb{flex:1;overflow-y:auto;padding:8px 0;scrollbar-width:thin;scrollbar-color:var(–border) transparent}
+#ph{padding:16px 16px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+#ph h1{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+#ph p{font-size:10px;color:var(--muted)}
+#pb{flex:1;overflow-y:auto;padding:8px 0;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 #pb::-webkit-scrollbar{width:3px}
-#pb::-webkit-scrollbar-thumb{background:var(–border);border-radius:2px}
+#pb::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
-.sec{padding:6px 16px 12px;border-bottom:1px solid var(–border)}
+.sec{padding:6px 16px 12px;border-bottom:1px solid var(--border)}
 .sec:last-child{border-bottom:none}
-.st{font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(–muted);margin:4px 0 10px}
+.st{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:4px 0 10px}
 .row{display:flex;align-items:center;gap:8px;margin-bottom:9px}
 .row label{font-size:11px;min-width:88px;flex-shrink:0}
-.row .v{font-family:‘Space Mono’,monospace;font-size:10px;color:var(–accent);min-width:38px;text-align:right;flex-shrink:0}
-input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:3px;background:var(–track);border-radius:2px;outline:none;cursor:pointer;min-width:0}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(–accent);box-shadow:0 0 7px var(–accent);cursor:pointer}
-input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(–accent);border:none;cursor:pointer}
+.row .v{font-family:'Space Mono',monospace;font-size:10px;color:var(--accent);min-width:38px;text-align:right;flex-shrink:0}
+input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:3px;background:var(--track);border-radius:2px;outline:none;cursor:pointer;min-width:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 7px var(--accent);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);border:none;cursor:pointer}
 .brow{display:flex;gap:6px;flex-wrap:wrap}
-.btn{flex:1;min-width:56px;padding:7px 6px;border:1px solid var(–border);background:rgba(255,255,255,0.03);color:var(–text);font-family:‘Space Mono’,monospace;font-size:9px;letter-spacing:.09em;text-transform:uppercase;border-radius:4px;cursor:pointer;transition:all .15s;text-align:center}
-.btn:hover,.btn.on{background:rgba(0,229,255,.1);border-color:var(–accent);color:var(–accent);box-shadow:0 0 10px rgba(0,229,255,.15)}
-.btn.danger{border-color:var(–danger);color:var(–danger)}
+.btn{flex:1;min-width:56px;padding:7px 6px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.09em;text-transform:uppercase;border-radius:4px;cursor:pointer;transition:all .15s;text-align:center}
+.btn:hover,.btn.on{background:rgba(0,229,255,.1);border-color:var(--accent);color:var(--accent);box-shadow:0 0 10px rgba(0,229,255,.15)}
+.btn.danger{border-color:var(--danger);color:var(--danger)}
 .btn.danger:hover{background:rgba(255,61,127,.1)}
 .tog{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
 .tog label{font-size:11px}
-.sw{width:34px;height:18px;background:var(–track);border-radius:9px;position:relative;cursor:pointer;border:1px solid var(–border);transition:background .2s,border-color .2s;flex-shrink:0}
-.sw.on{background:rgba(0,229,255,.2);border-color:var(–accent)}
-.sw::after{content:’’;position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:var(–muted);transition:transform .2s,background .2s}
-.sw.on::after{transform:translateX(16px);background:var(–accent);box-shadow:0 0 5px var(–accent)}
+.sw{width:34px;height:18px;background:var(--track);border-radius:9px;position:relative;cursor:pointer;border:1px solid var(--border);transition:background .2s,border-color .2s;flex-shrink:0}
+.sw.on{background:rgba(0,229,255,.2);border-color:var(--accent)}
+.sw::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:var(--muted);transition:transform .2s,background .2s}
+.sw.on::after{transform:translateX(16px);background:var(--accent);box-shadow:0 0 5px var(--accent)}
 .cprow{display:flex;align-items:center;gap:6px;margin-bottom:9px;flex-wrap:wrap}
 .cprow label{font-size:11px;min-width:60px}
 .swatch{width:20px;height:20px;border-radius:4px;border:2px solid transparent;cursor:pointer;transition:transform .1s,border-color .15s;flex-shrink:0}
 .swatch:hover{transform:scale(1.15)}
 .swatch.on{border-color:#fff}
-select{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(–border);color:var(–text);font-family:‘DM Sans’,sans-serif;font-size:11px;padding:6px 8px;border-radius:4px;cursor:pointer;outline:none;appearance:none;margin-bottom:8px}
-select:focus{border-color:var(–accent)}
+select{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:11px;padding:6px 8px;border-radius:4px;cursor:pointer;outline:none;appearance:none;margin-bottom:8px}
+select:focus{border-color:var(--accent)}
 
-#tb{position:fixed;top:14px;right:14px;z-index:20;width:40px;height:40px;background:rgba(8,10,15,.85);border:1px solid var(–border);border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;backdrop-filter:blur(10px);transition:border-color .2s}
-#tb:hover{border-color:var(–accent)}
-#tb span{display:block;width:16px;height:2px;background:var(–text);border-radius:1px}
-#fps{position:fixed;bottom:12px;left:12px;font-family:‘Space Mono’,monospace;font-size:10px;color:var(–muted);pointer-events:none;z-index:5}
+#tb{position:fixed;top:14px;right:14px;z-index:20;width:40px;height:40px;background:rgba(8,10,15,.85);border:1px solid var(--border);border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;backdrop-filter:blur(10px);transition:border-color .2s}
+#tb:hover{border-color:var(--accent)}
+#tb span{display:block;width:16px;height:2px;background:var(--text);border-radius:1px}
+#fps{position:fixed;bottom:12px;left:12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);pointer-events:none;z-index:5}
 #sflash{position:fixed;inset:0;background:rgba(255,255,255,.15);pointer-events:none;z-index:100;opacity:0;transition:opacity .05s}
 #sflash.pop{opacity:1}
 
 @media(max-width:600px){
-#panel{top:auto;bottom:0;width:100%;height:60vh;border-left:none;border-top:1px solid var(–border)}
-#panel.hidden{transform:translateY(100%)}
-#tb{top:auto;bottom:14px;right:14px}
+  #panel{top:auto;bottom:0;width:100%;height:60vh;border-left:none;border-top:1px solid var(--border)}
+  #panel.hidden{transform:translateY(100%)}
+  #tb{top:auto;bottom:14px;right:14px}
 }
 </style>
-
 </head>
 <body>
 <canvas id="c"></canvas>
@@ -83,121 +81,92 @@ select:focus{border-color:var(–accent)}
 <div id="panel">
   <div id="ph"><h1>Fluid Sim</h1><p>WebGL · Navier–Stokes</p></div>
   <div id="pb">
+    <div class="sec">
+      <div class="st">Preset</div>
+      <select id="sel-preset">
+        <option value="">— Custom —</option>
+        <option value="ink">Ink Drop</option>
+        <option value="fire">Inferno</option>
+        <option value="electric">Electric Storm</option>
+        <option value="pastel">Pastel Dream</option>
+        <option value="neon">Neon</option>
+        <option value="oil">Oil Slick</option>
+      </select>
+    </div>
 
-```
-<div class="sec">
-  <div class="st">Preset</div>
-  <select id="sel-preset">
-    <option value="">— Custom —</option>
-    <option value="ink">Ink Drop</option>
-    <option value="fire">Inferno</option>
-    <option value="electric">Electric Storm</option>
-    <option value="pastel">Pastel Dream</option>
-    <option value="neon">Neon</option>
-    <option value="oil">Oil Slick</option>
-  </select>
-</div>
+    <div class="sec">
+      <div class="st">Simulation</div>
+      <div class="row"><label>Vel Dissipation</label><input type="range" id="s-vdiss" min="0.9" max="1.0" step="0.001" value="0.992"><span class="v" id="v-vdiss">0.992</span></div>
+      <div class="row"><label>Dye Dissipation</label><input type="range" id="s-diss" min="0.9" max="1.0" step="0.001" value="0.995"><span class="v" id="v-diss">0.995</span></div>
+      <div class="row"><label>Vorticity</label><input type="range" id="s-curl" min="0" max="50" step="1" value="15"><span class="v" id="v-curl">15</span></div>
+      <div class="row"><label>Pressure</label><input type="range" id="s-pres" min="4" max="50" step="1" value="20"><span class="v" id="v-pres">20</span></div>
+      <div class="row"><label>Splat Size</label><input type="range" id="s-rad" min="0.001" max="0.015" step="0.001" value="0.005"><span class="v" id="v-rad">0.005</span></div>
+      <div class="row"><label>Splat Force</label><input type="range" id="s-force" min="1000" max="12000" step="200" value="5000"><span class="v" id="v-force">5000</span></div>
+    </div>
 
-<div class="sec">
-  <div class="st">Simulation</div>
-  <div class="row"><label>Vel Dissipation</label><input type="range" id="s-vdiss" min="0.9" max="1.0" step="0.001" value="0.999"><span class="v" id="v-vdiss">0.999</span></div>
-  <div class="row"><label>Dye Dissipation</label><input type="range" id="s-diss" min="0.9" max="1.0" step="0.001" value="0.995"><span class="v" id="v-diss">0.995</span></div>
-  <div class="row"><label>Vorticity</label><input type="range" id="s-curl" min="0" max="50" step="1" value="15"><span class="v" id="v-curl">15</span></div>
-  <div class="row"><label>Pressure</label><input type="range" id="s-pres" min="4" max="50" step="1" value="20"><span class="v" id="v-pres">20</span></div>
-  <div class="row"><label>Splat Size</label><input type="range" id="s-rad" min="0.001" max="0.015" step="0.001" value="0.005"><span class="v" id="v-rad">0.005</span></div>
-  <div class="row"><label>Splat Force</label><input type="range" id="s-force" min="1000" max="12000" step="200" value="5000"><span class="v" id="v-force">5000</span></div>
-</div>
+    <div class="sec">
+      <div class="st">Color</div>
+      <div class="brow" id="cmode-btns">
+        <button class="btn on" data-cm="rainbow">Rainbow</button>
+        <button class="btn" data-cm="custom">Custom</button>
+        <button class="btn" data-cm="fire">Fire</button>
+        <button class="btn" data-cm="mono">Mono</button>
+      </div>
+      <div class="cprow" style="margin-top:10px">
+        <label>Pick</label>
+        <div class="swatch on" style="background:#00e5ff" data-c="#00e5ff"></div>
+        <div class="swatch" style="background:#ff3d7f" data-c="#ff3d7f"></div>
+        <div class="swatch" style="background:#ffe200" data-c="#ffe200"></div>
+        <div class="swatch" style="background:#80ff40" data-c="#80ff40"></div>
+        <div class="swatch" style="background:#ff6000" data-c="#ff6000"></div>
+        <div class="swatch" style="background:#bb44ff" data-c="#bb44ff"></div>
+        <input type="color" id="cpick" value="#00e5ff" style="width:20px;height:20px;border:none;background:none;padding:0;cursor:pointer;border-radius:3px;flex-shrink:0">
+      </div>
+    </div>
 
-<div class="sec">
-  <div class="st">Color</div>
-  <div class="brow" id="cmode-btns">
-    <button class="btn on" data-cm="rainbow">Rainbow</button>
-    <button class="btn" data-cm="custom">Custom</button>
-    <button class="btn" data-cm="fire">Fire</button>
-    <button class="btn" data-cm="mono">Mono</button>
-  </div>
-  <div class="cprow" style="margin-top:10px">
-    <label>Pick</label>
-    <div class="swatch on" style="background:#00e5ff" data-c="#00e5ff"></div>
-    <div class="swatch" style="background:#ff3d7f" data-c="#ff3d7f"></div>
-    <div class="swatch" style="background:#ffe200" data-c="#ffe200"></div>
-    <div class="swatch" style="background:#80ff40" data-c="#80ff40"></div>
-    <div class="swatch" style="background:#ff6000" data-c="#ff6000"></div>
-    <div class="swatch" style="background:#bb44ff" data-c="#bb44ff"></div>
-    <input type="color" id="cpick" value="#00e5ff" style="width:20px;height:20px;border:none;background:none;padding:0;cursor:pointer;border-radius:3px;flex-shrink:0">
-  </div>
-</div>
+    <div class="sec">
+      <div class="st">Visual</div>
+      <div class="tog"><label>Bloom</label><div class="sw on" id="sw-bloom"></div></div>
+      <div class="tog"><label>Shading</label><div class="sw on" id="sw-shade"></div></div>
+      <div class="tog"><label>Sunrays</label><div class="sw on" id="sw-sun"></div></div>
+      <div class="row"><label>Bloom Thresh</label><input type="range" id="s-bth" min="0.1" max="1.0" step="0.05" value="0.6"><span class="v" id="v-bth">0.6</span></div>
+    </div>
 
-<div class="sec">
-  <div class="st">Visual</div>
-  <div class="tog"><label>Bloom</label><div class="sw on" id="sw-bloom"></div></div>
-  <div class="tog"><label>Shading</label><div class="sw on" id="sw-shade"></div></div>
-  <div class="tog"><label>Sunrays</label><div class="sw on" id="sw-sun"></div></div>
-  <div class="row"><label>Bloom Thresh</label><input type="range" id="s-bth" min="0.1" max="1.0" step="0.05" value="0.6"><span class="v" id="v-bth">0.6</span></div>
-</div>
+    <div class="sec">
+      <div class="st">Auto Splat</div>
+      <div class="tog"><label>Enabled</label><div class="sw on" id="sw-auto"></div></div>
+      <div class="row"><label>Rate (Hz)</label><input type="range" id="s-arate" min="0.1" max="2" step="0.1" value="0.3"><span class="v" id="v-arate">0.3</span></div>
+      <div class="row"><label>Count</label><input type="range" id="s-acount" min="1" max="10" step="1" value="1"><span class="v" id="v-acount">1</span></div>
+    </div>
 
-<div class="sec">
-  <div class="st">Auto Splat</div>
-  <div class="tog"><label>Enabled</label><div class="sw on" id="sw-auto"></div></div>
-  <div class="row"><label>Rate (Hz)</label><input type="range" id="s-arate" min="0.1" max="2" step="0.1" value="0.3"><span class="v" id="v-arate">0.3</span></div>
-  <div class="row"><label>Count</label><input type="range" id="s-acount" min="1" max="10" step="1" value="1"><span class="v" id="v-acount">1</span></div>
-</div>
-
-<div class="sec">
-  <div class="st">Actions</div>
-  <div class="brow">
-    <button class="btn" id="btn-splat">Splat!</button>
-    <button class="btn danger" id="btn-clear">Clear</button>
-  </div>
-  <p style="font-size:10px;color:var(--muted);margin-top:10px;line-height:1.6">📳 Shake device to explode</p>
-</div>
-```
-
+    <div class="sec">
+      <div class="st">Actions</div>
+      <div class="brow">
+        <button class="btn" id="btn-splat">Splat!</button>
+        <button class="btn danger" id="btn-clear">Clear</button>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
 'use strict';
 
-// ═══════════════════════════════
-//  CONFIG
-// ═══════════════════════════════
 const C = {
-  SIM_RES: 128,
-  DYE_RES: 1024,
-  DISS: 0.995,        // dye dissipation
-  VDISS: 0.999,       // velocity dissipation
-  PITER: 20,         // pressure iterations
-  CURL: 15,
-  RADIUS: 0.005,     // splat radius (UV units)
-  FORCE: 5000,
-  BLOOM: true, BLOOM_ITER:8, BLOOM_RES:256, BLOOM_THRESH:0.6, BLOOM_SOFT:0.7, BLOOM_INT:0.8,
-  SHADE: true,
-  SUN: true, SUN_RES:196, SUN_WT:1.0,
-  AUTO: true, ARATE:0.3, ACOUNT:1,
-  CM: 'rainbow',       // rainbow | custom | fire | mono
-  CC: [0, 0.9, 1],     // custom color RGB 0-1
+  SIM_RES: 128, DYE_RES: 1024, DISS: 0.995, VDISS: 0.992, PITER: 20, CURL: 15,
+  RADIUS: 0.005, FORCE: 5000, BLOOM: true, BLOOM_ITER:8, BLOOM_RES:256, BLOOM_THRESH:0.6,
+  BLOOM_SOFT:0.7, BLOOM_INT:0.8, SHADE: true, SUN: true, SUN_RES:196, SUN_WT:1.0,
+  AUTO: true, ARATE:0.3, ACOUNT:1, CM: 'rainbow', CC: [0, 0.9, 1]
 };
 
-// ═══════════════════════════════
-//  WEBGL
-// ═══════════════════════════════
 const canvas = document.getElementById('c');
 const params = {alpha:true,depth:false,stencil:false,antialias:false};
 let gl = canvas.getContext('webgl2', params);
-const GL2 = !!gl;
 if (!gl) gl = canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params);
 
-let hfExt, linExt;
-if (GL2) {
-  gl.getExtension('EXT_color_buffer_float');
-  linExt = gl.getExtension('OES_texture_float_linear');
-} else {
-  hfExt  = gl.getExtension('OES_texture_half_float');
-  linExt = gl.getExtension('OES_texture_half_float_linear');
-}
-
-const HALF = GL2 ? gl.HALF_FLOAT : (hfExt && hfExt.HALF_FLOAT_OES);
+const hfExt = gl.getExtension('OES_texture_half_float');
+const linExt = gl.getExtension('OES_texture_half_float_linear');
+const HALF = (gl instanceof WebGL2RenderingContext) ? gl.HALF_FLOAT : hfExt.HALF_FLOAT_OES;
 const LIN  = linExt ? gl.LINEAR : gl.NEAREST;
 
 function fmtOk(int, fmt, type) {
@@ -213,7 +182,8 @@ function fmtOk(int, fmt, type) {
 }
 
 let RGBA, RG, R;
-if (GL2) {
+if (gl instanceof WebGL2RenderingContext) {
+  gl.getExtension('EXT_color_buffer_float');
   RGBA = fmtOk(gl.RGBA16F, gl.RGBA, HALF) ? {i:gl.RGBA16F, f:gl.RGBA} : {i:gl.RGBA, f:gl.RGBA};
   RG   = fmtOk(gl.RG16F,   gl.RG,   HALF) ? {i:gl.RG16F,   f:gl.RG}   : {i:gl.RGBA, f:gl.RGBA};
   R    = fmtOk(gl.R16F,    gl.RED,  HALF) ? {i:gl.R16F,    f:gl.RED}  : {i:gl.RGBA, f:gl.RGBA};
@@ -221,561 +191,123 @@ if (GL2) {
   RGBA = RG = R = {i:gl.RGBA, f:gl.RGBA};
 }
 
-gl.clearColor(0,0,0,1);
-
-// ═══════════════════════════════
-//  SHADER UTILS
-// ═══════════════════════════════
-const VERT = `
-precision highp float;
-attribute vec2 aPos;
-varying vec2 vUv,vL,vR,vT,vB;
-uniform vec2 tSz;
-void main(){
-  vUv=aPos*.5+.5;
-  vL=vUv-vec2(tSz.x,0.); vR=vUv+vec2(tSz.x,0.);
-  vT=vUv+vec2(0.,tSz.y); vB=vUv-vec2(0.,tSz.y);
-  gl_Position=vec4(aPos,0.,1.);
-}`;
-
-function mkShader(type, src) {
-  const s = gl.createShader(type);
-  gl.shaderSource(s, src); gl.compileShader(s);
-  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(s));
-  return s;
-}
-function mkProg(vs, fsSrc) {
-  const p = gl.createProgram();
-  gl.attachShader(p, vs);
-  gl.attachShader(p, mkShader(gl.FRAGMENT_SHADER, fsSrc));
-  gl.linkProgram(p);
-  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) console.error(gl.getProgramInfoLog(p));
-  const u = {};
-  const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
-  for (let i=0;i<n;i++){const nm=gl.getActiveUniform(p,i).name; u[nm]=gl.getUniformLocation(p,nm);}
+const VERT = `precision highp float;attribute vec2 aPos;varying vec2 vUv,vL,vR,vT,vB;uniform vec2 tSz;void main(){vUv=aPos*.5+.5;vL=vUv-vec2(tSz.x,0.);vR=vUv+vec2(tSz.x,0.);vT=vUv+vec2(0.,tSz.y);vB=vUv-vec2(0.,tSz.y);gl_Position=vec4(aPos,0.,1.);}`;
+function mkShader(t, s) { const sh = gl.createShader(t); gl.shaderSource(sh, s); gl.compileShader(sh); return sh; }
+function mkProg(vs, fs) {
+  const p = gl.createProgram(); gl.attachShader(p, vs); gl.attachShader(p, mkShader(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(p);
+  const u = {}; const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
+  for (let i=0;i<n;i++){ const nm=gl.getActiveUniform(p,i).name; u[nm]=gl.getUniformLocation(p,nm); }
   return {p, u};
 }
-
 const VS = mkShader(gl.VERTEX_SHADER, VERT);
-
 const PR = {
-  copy:  mkProg(VS, `precision mediump float;precision mediump sampler2D;varying vec2 vUv;uniform sampler2D u;void main(){gl_FragColor=texture2D(u,vUv);}`),
-  clear: mkProg(VS, `precision mediump float;precision mediump sampler2D;varying vec2 vUv;uniform sampler2D u;uniform float val;void main(){gl_FragColor=val*texture2D(u,vUv);}`),
-
-  splat: mkProg(VS, `precision highp float;precision highp sampler2D;
-varying vec2 vUv;uniform sampler2D uT;uniform float asp,rad;uniform vec3 col;uniform vec2 pt;
-void main(){vec2 p=vUv-pt;p.x*=asp;vec3 s=exp(-dot(p,p)/rad)*col;gl_FragColor=vec4(texture2D(uT,vUv).xyz+s,1.);}`),
-
-  adv: mkProg(VS, `precision highp float;precision highp sampler2D;
-varying vec2 vUv;uniform sampler2D uV,uS;uniform vec2 tSz,dSz;uniform float dt,diss;
-vec4 bil(sampler2D s,vec2 uv,vec2 sz){
-  vec2 st=uv/sz-.5,i=floor(st),f=fract(st);
-  vec4 a=texture2D(s,(i+vec2(.5,.5))*sz),b=texture2D(s,(i+vec2(1.5,.5))*sz);
-  vec4 c=texture2D(s,(i+vec2(.5,1.5))*sz),d=texture2D(s,(i+vec2(1.5,1.5))*sz);
-  return mix(mix(a,b,f.x),mix(c,d,f.x),f.y);}
-void main(){
-  vec2 pos=vUv-dt*bil(uV,vUv,tSz).xy*tSz;
-  // diss is a per-frame keep fraction (e.g. 0.99 = keep 99% each frame at 60fps)
-  gl_FragColor=bil(uS,pos,dSz)*pow(diss,dt*60.0);}`),
-
-  div: mkProg(VS, `precision mediump float;precision mediump sampler2D;
-varying vec2 vL,vR,vT,vB;uniform sampler2D uV;
-void main(){float l=texture2D(uV,vL).x,r=texture2D(uV,vR).x,t=texture2D(uV,vT).y,b=texture2D(uV,vB).y;gl_FragColor=vec4(.5*(r-l+t-b),0.,0.,1.);}`),
-
-  curl: mkProg(VS, `precision mediump float;precision mediump sampler2D;
-varying vec2 vL,vR,vT,vB;uniform sampler2D uV;
-void main(){float l=texture2D(uV,vL).y,r=texture2D(uV,vR).y,t=texture2D(uV,vT).x,b=texture2D(uV,vB).x;gl_FragColor=vec4(.5*(r-l-t+b),0.,0.,1.);}`),
-
-  vort: mkProg(VS, `precision highp float;precision highp sampler2D;
-varying vec2 vUv,vL,vR,vT,vB;uniform sampler2D uV,uC;uniform float curl,dt;
-void main(){
-  float l=texture2D(uC,vL).x,r=texture2D(uC,vR).x,t=texture2D(uC,vT).x,b=texture2D(uC,vB).x,CC=texture2D(uC,vUv).x;
-  vec2 f=.5*vec2(abs(t)-abs(b),abs(r)-abs(l));f/=length(f)+.0001;f*=curl*CC;f.y*=-1.;
-  gl_FragColor=vec4(texture2D(uV,vUv).xy+f*dt,0.,1.);}`),
-
-  pres: mkProg(VS, `precision mediump float;precision mediump sampler2D;
-varying vec2 vUv,vL,vR,vT,vB;uniform sampler2D uP,uD;
-void main(){float l=texture2D(uP,vL).x,r=texture2D(uP,vR).x,t=texture2D(uP,vT).x,b=texture2D(uP,vB).x,d=texture2D(uD,vUv).x;gl_FragColor=vec4(.25*(l+r+t+b-d),0.,0.,1.);}`),
-
-  grad: mkProg(VS, `precision mediump float;precision mediump sampler2D;
-varying vec2 vUv,vL,vR,vT,vB;uniform sampler2D uP,uV;
-void main(){float l=texture2D(uP,vL).x,r=texture2D(uP,vR).x,t=texture2D(uP,vT).x,b=texture2D(uP,vB).x;gl_FragColor=vec4(texture2D(uV,vUv).xy-vec2(r-l,t-b),0.,1.);}`),
-
-  bpre: mkProg(VS, `precision mediump float;precision mediump sampler2D;
-varying vec2 vUv;uniform sampler2D u;uniform vec3 curve;uniform float thresh;
-void main(){vec3 c=texture2D(u,vUv).rgb;float br=max(c.r,max(c.g,c.b));float rq=clamp(br-curve.x,0.,curve.y);rq=curve.z*rq*rq;c*=max(rq,br-thresh)/max(br,.0001);gl_FragColor=vec4(c,0.);}`),
-
-  blur: mkProg(VS, `precision mediump float;precision mediump sampler2D;
-varying vec2 vL,vR,vT,vB;uniform sampler2D u;
-void main(){gl_FragColor=.25*(texture2D(u,vL)+texture2D(u,vR)+texture2D(u,vT)+texture2D(u,vB));}`),
-
-  bfin: mkProg(VS, `precision mediump float;precision mediump sampler2D;
-varying vec2 vL,vR,vT,vB;uniform sampler2D u;uniform float intensity;
-void main(){gl_FragColor=.25*(texture2D(u,vL)+texture2D(u,vR)+texture2D(u,vT)+texture2D(u,vB))*intensity;}`),
-
-  smask: mkProg(VS, `precision highp float;precision highp sampler2D;
-varying vec2 vUv;uniform sampler2D u;
-void main(){vec4 c=texture2D(u,vUv);float br=max(c.r,max(c.g,c.b));c.a=1.-min(br*20.,0.8);gl_FragColor=c;}`),
-
-  srays: mkProg(VS, `precision highp float;precision highp sampler2D;
-varying vec2 vUv;uniform sampler2D u;uniform float wt;
-#define IT 16
-void main(){float Den=.3,Dec=.95,Exp=.7;vec2 coord=vUv,dir=(vUv-.5)*(1./float(IT)*Den);float decay=1.;vec4 col=vec4(0.);for(int i=0;i<IT;i++){coord-=dir;col+=texture2D(u,coord)*decay*Exp;decay*=Dec;}gl_FragColor=col*wt;}`),
-
-  disp: mkProg(VS, `precision highp float;precision highp sampler2D;
-varying vec2 vUv,vL,vR,vT,vB;uniform vec2 tSz;
-uniform sampler2D uTex,uBloom,uSun;uniform bool doBloom,doSun,doShade;
-vec3 gamma(vec3 c){return max(1.055*pow(max(c,vec3(0.)),vec3(.416667))-.055,vec3(0.));}
-void main(){
-  vec3 c=texture2D(uTex,vUv).rgb;
-  if(doShade){vec3 l=texture2D(uTex,vL).rgb,r=texture2D(uTex,vR).rgb,t=texture2D(uTex,vT).rgb,b=texture2D(uTex,vB).rgb;float dx=length(r)-length(l),dy=length(t)-length(b);vec3 n=normalize(vec3(dx,dy,length(tSz)));c*=clamp(dot(n,vec3(0.,0.,1.))+.7,.7,1.);}
-  float sr=1.;if(doSun){sr=texture2D(uSun,vUv).r;c*=sr;}
-  if(doBloom){vec3 bl=texture2D(uBloom,vUv).rgb;if(doSun)bl*=sr;bl=gamma(bl);c+=bl;}
-  gl_FragColor=vec4(c,max(c.r,max(c.g,c.b)));}`),
+  splat: mkProg(VS, `precision highp float;varying vec2 vUv;uniform sampler2D uT;uniform float asp,rad;uniform vec3 col;uniform vec2 pt;void main(){vec2 p=vUv-pt;p.x*=asp;vec3 s=exp(-dot(p,p)/rad)*col;gl_FragColor=vec4(texture2D(uT,vUv).xyz+s,1.);}`),
+  adv: mkProg(VS, `precision highp float;varying vec2 vUv;uniform sampler2D uV,uS;uniform vec2 tSz,dSz;uniform float dt,diss;vec4 bil(sampler2D s,vec2 uv,vec2 sz){vec2 st=uv/sz-.5,i=floor(st),f=fract(st);return mix(mix(texture2D(s,(i+vec2(.5,.5))*sz),texture2D(s,(i+vec2(1.5,.5))*sz),f.x),mix(texture2D(s,(i+vec2(.5,1.5))*sz),texture2D(s,(i+vec2(1.5,1.5))*sz),f.x),f.y);}void main(){vec2 pos=vUv-dt*bil(uV,vUv,tSz).xy*tSz;gl_FragColor=bil(uS,pos,dSz)*pow(diss,dt*60.0);}`),
+  curl: mkProg(VS, `precision mediump float;varying vec2 vL,vR,vT,vB;uniform sampler2D uV;void main(){float l=texture2D(uV,vL).y,r=texture2D(uV,vR).y,t=texture2D(uV,vT).x,b=texture2D(uV,vB).x;gl_FragColor=vec4(.5*(r-l-t+b),0.,0.,1.);}`),
+  vort: mkProg(VS, `precision highp float;varying vec2 vUv,vL,vR,vT,vB;uniform sampler2D uV,uC;uniform float curl,dt;void main(){float l=texture2D(uC,vL).x,r=texture2D(uC,vR).x,t=texture2D(uC,vT).x,b=texture2D(uC,vB).x,CC=texture2D(uC,vUv).x;vec2 f=.5*vec2(abs(t)-abs(b),abs(r)-abs(l));f/=length(f)+.0001;f*=curl*CC;f.y*=-1.;gl_FragColor=vec4(texture2D(uV,vUv).xy+f*dt,0.,1.);}`),
+  div: mkProg(VS, `precision mediump float;varying vec2 vL,vR,vT,vB;uniform sampler2D uV;void main(){float l=texture2D(uV,vL).x,r=texture2D(uV,vR).x,t=texture2D(uV,vT).y,b=texture2D(uV,vB).y;gl_FragColor=vec4(.5*(r-l+t-b),0.,0.,1.);}`),
+  pres: mkProg(VS, `precision mediump float;varying vec2 vUv,vL,vR,vT,vB;uniform sampler2D uP,uD;void main(){float l=texture2D(uP,vL).x,r=texture2D(uP,vR).x,t=texture2D(uP,vT).x,b=texture2D(uP,vB).x,d=texture2D(uD,vUv).x;gl_FragColor=vec4(.25*(l+r+t+b-d),0.,0.,1.);}`),
+  grad: mkProg(VS, `precision mediump float;varying vec2 vUv,vL,vR,vT,vB;uniform sampler2D uP,uV;void main(){float l=texture2D(uP,vL).x,r=texture2D(uP,vR).x,t=texture2D(uP,vT).x,b=texture2D(uP,vB).x;gl_FragColor=vec4(texture2D(uV,vUv).xy-vec2(r-l,t-b),0.,1.);}`),
+  clear: mkProg(VS, `precision mediump float;varying vec2 vUv;uniform sampler2D u;uniform float val;void main(){gl_FragColor=val*texture2D(u,vUv);}`),
+  bpre: mkProg(VS, `precision mediump float;varying vec2 vUv;uniform sampler2D u;uniform vec3 curve;uniform float thresh;void main(){vec3 c=texture2D(u,vUv).rgb;float br=max(c.r,max(c.g,c.b));float rq=clamp(br-curve.x,0.,curve.y);rq=curve.z*rq*rq;c*=max(rq,br-thresh)/max(br,.0001);gl_FragColor=vec4(c,0.);}`),
+  blur: mkProg(VS, `precision mediump float;varying vec2 vL,vR,vT,vB;uniform sampler2D u;void main(){gl_FragColor=.25*(texture2D(u,vL)+texture2D(u,vR)+texture2D(u,vT)+texture2D(u,vB));}`),
+  bfin: mkProg(VS, `precision mediump float;varying vec2 vL,vR,vT,vB;uniform sampler2D u;uniform float intensity;void main(){gl_FragColor=.25*(texture2D(u,vL)+texture2D(u,vR)+texture2D(u,vT)+texture2D(u,vB))*intensity;}`),
+  disp: mkProg(VS, `precision highp float;varying vec2 vUv,vL,vR,vT,vB;uniform vec2 tSz;uniform sampler2D uTex,uBloom;uniform bool doBloom,doShade;vec3 gamma(vec3 c){return max(1.055*pow(max(c,vec3(0.)),vec3(.416667))-.055,vec3(0.));}void main(){vec3 c=texture2D(uTex,vUv).rgb;if(doShade){vec3 l=texture2D(uTex,vL).rgb,r=texture2D(uTex,vR).rgb,t=texture2D(uTex,vT).rgb,b=texture2D(uTex,vB).rgb;float dx=length(r)-length(l),dy=length(t)-length(b);vec3 n=normalize(vec3(dx,dy,length(tSz)));c*=clamp(dot(n,vec3(0.,0.,1.))+.7,.7,1.);}if(doBloom){vec3 bl=gamma(texture2D(uBloom,vUv).rgb);c+=bl;}gl_FragColor=vec4(c,1.0);}`),
 };
 
-// ═══════════════════════════════
-//  QUAD
-// ═══════════════════════════════
-const vbuf = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, vbuf);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,-1,1,1,1,1,-1]), gl.STATIC_DRAW);
-const ibuf = gl.createBuffer();
-gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibuf);
-gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0,1,2,0,2,3]), gl.STATIC_DRAW);
-
-function blit(fbo) {
-  if (fbo) { gl.bindFramebuffer(gl.FRAMEBUFFER, fbo.fb); gl.viewport(0,0,fbo.w,fbo.h); }
-  else      { gl.bindFramebuffer(gl.FRAMEBUFFER, null);   gl.viewport(0,0,gl.drawingBufferWidth,gl.drawingBufferHeight); }
-  gl.bindBuffer(gl.ARRAY_BUFFER, vbuf);
-  gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
-  gl.enableVertexAttribArray(0);
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibuf);
-  gl.drawElements(gl.TRIANGLES,6,gl.UNSIGNED_SHORT,0);
+const vbuf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vbuf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,-1,1,1,1,1,-1]), gl.STATIC_DRAW);
+const ibuf = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibuf); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0,1,2,0,2,3]), gl.STATIC_DRAW);
+function blit(f) {
+  if(f){ gl.bindFramebuffer(gl.FRAMEBUFFER,f.fb); gl.viewport(0,0,f.w,f.h); } else { gl.bindFramebuffer(gl.FRAMEBUFFER,null); gl.viewport(0,0,gl.drawingBufferWidth,gl.drawingBufferHeight); }
+  gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0); gl.enableVertexAttribArray(0); gl.drawElements(gl.TRIANGLES,6,gl.UNSIGNED_SHORT,0);
 }
-
-// ═══════════════════════════════
-//  FBO
-// ═══════════════════════════════
-function makeFBO(w, h, int, fmt, filter) {
-  const tex = gl.createTexture();
-  gl.bindTexture(gl.TEXTURE_2D, tex);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  gl.texImage2D(gl.TEXTURE_2D,0,int,w,h,0,fmt,HALF,null);
-  const fb = gl.createFramebuffer();
-  gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
-  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
-  gl.viewport(0,0,w,h); gl.clear(gl.COLOR_BUFFER_BIT);
-  const tsx=1/w, tsy=1/h;
-  function bind(id){ gl.activeTexture(gl.TEXTURE0+id); gl.bindTexture(gl.TEXTURE_2D, tex); return id; }
-  return {fb,tex,w,h,tsx,tsy,bind};
+function makeFBO(w,h,i,fm,fl){
+  const t=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,t); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,fl); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,fl);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  gl.texImage2D(gl.TEXTURE_2D,0,i,w,h,0,fm,HALF,null); const fb=gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER,fb); gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0);
+  return {fb,tex:t,w,h,tsx:1/w,tsy:1/h,bind:(id)=>{gl.activeTexture(gl.TEXTURE0+id);gl.bindTexture(gl.TEXTURE_2D,t);return id;}};
 }
-function makeDouble(w,h,int,fmt,filter){
-  let a=makeFBO(w,h,int,fmt,filter), b=makeFBO(w,h,int,fmt,filter);
-  return { get read(){return a}, get write(){return b}, swap(){[a,b]=[b,a]}, w,h, tsx:a.tsx,tsy:a.tsy };
-}
+function makeDouble(w,h,i,f,l){ let a=makeFBO(w,h,i,f,l),b=makeFBO(w,h,i,f,l); return {get read(){return a},get write(){return b},swap(){[a,b]=[b,a]},w,h,tsx:a.tsx,tsy:a.tsy}; }
 
-// ═══════════════════════════════
-//  RESIZE + INIT FBOS
-// ═══════════════════════════════
-let dye,vel,Div,Curl,Pres,bloom,bloomFBOs=[],sunrays,sunraysT;
-
-function getRes(target) {
-  const asp = gl.drawingBufferWidth / gl.drawingBufferHeight;
-  const s = Math.round(target);
-  return asp>=1 ? {w:Math.round(s*asp),h:s} : {w:s,h:Math.round(s/asp)};
-}
-
+let dye, vel, Div, Curl, Pres, bloom, bloomFBOs=[];
 function initFBOs() {
-  const sr=getRes(C.SIM_RES), dr=getRes(C.DYE_RES), br=getRes(C.BLOOM_RES), xr=getRes(C.SUN_RES);
-  dye  = makeDouble(dr.w,dr.h,RGBA.i,RGBA.f,LIN);
-  vel  = makeDouble(sr.w,sr.h,RG.i,  RG.f,  LIN);
-  Div  = makeFBO(sr.w,sr.h,R.i,R.f,gl.NEAREST);
-  Curl = makeFBO(sr.w,sr.h,R.i,R.f,gl.NEAREST);
-  Pres = makeDouble(sr.w,sr.h,R.i,R.f,gl.NEAREST);
-  bloom=makeFBO(br.w,br.h,RGBA.i,RGBA.f,LIN);
-  bloomFBOs=[];
-  for(let i=0;i<C.BLOOM_ITER;i++){const bw=br.w>>(i+1),bh=br.h>>(i+1);if(bw<2||bh<2)break;bloomFBOs.push(makeFBO(bw,bh,RGBA.i,RGBA.f,LIN));}
-  sunrays=makeFBO(xr.w,xr.h,R.i,R.f,LIN);
-  sunraysT=makeFBO(xr.w,xr.h,R.i,R.f,LIN);
+  const sr={w:Math.round(C.SIM_RES*(canvas.width/canvas.height)),h:C.SIM_RES};
+  const dr={w:Math.round(C.DYE_RES*(canvas.width/canvas.height)),h:C.DYE_RES};
+  dye=makeDouble(dr.w,dr.h,RGBA.i,RGBA.f,LIN); vel=makeDouble(sr.w,sr.h,RG.i,RG.f,LIN);
+  Div=makeFBO(sr.w,sr.h,R.i,R.f,gl.NEAREST); Curl=makeFBO(sr.w,sr.h,R.i,R.f,gl.NEAREST); Pres=makeDouble(sr.w,sr.h,R.i,R.f,gl.NEAREST);
+  bloom=makeFBO(256,256,RGBA.i,RGBA.f,LIN); bloomFBOs=[];
+  for(let i=0;i<C.BLOOM_ITER;i++) bloomFBOs.push(makeFBO(256>>(i+1),256>>(i+1),RGBA.i,RGBA.f,LIN));
 }
 
-function resizeCanvas() {
-  const dpr = Math.min(window.devicePixelRatio||1, 2);
-  const w = Math.round(canvas.clientWidth*dpr);
-  const h = Math.round(canvas.clientHeight*dpr);
-  // Only resize if change is more than 2px to avoid mobile browser chrome jitter
-  if (Math.abs(canvas.width-w) > 2 || Math.abs(canvas.height-h) > 2) {
-    canvas.width=w; canvas.height=h;
-    // Fully reset all FBOs on a real resize
-    dye=null; vel=null;
-    initFBOs();
-    return true;
-  }
-  return false;
+// Fixed Input
+const pointers = [], ptrMap = {};
+function getUV(x,y){ const r=canvas.getBoundingClientRect(); return {x:(x-r.left)/r.width,y:1-(y-r.top)/r.height}; }
+function updatePtr(id,x,y,d){
+  let p=ptrMap[id]; const uv=getUV(x,y);
+  if(!p && d){ p={id,x:uv.x,y:uv.y,prevX:uv.x,prevY:uv.y,down:true,col:genColor()}; ptrMap[id]=p; pointers.push(p); }
+  else if(p){ p.down=d; p.x=uv.x; p.y=uv.y; }
+}
+canvas.addEventListener('mousedown',e=>updatePtr(-1,e.clientX,e.clientY,true));
+window.addEventListener('mousemove',e=>updatePtr(-1,e.clientX,e.clientY,!!(e.buttons&1)));
+window.addEventListener('mouseup',()=>updatePtr(-1,0,0,false));
+canvas.addEventListener('touchstart',e=>{e.preventDefault();for(let t of e.changedTouches)updatePtr(t.identifier,t.clientX,t.clientY,true);},{passive:false});
+window.addEventListener('touchmove',e=>{for(let t of e.changedTouches)updatePtr(t.identifier,t.clientX,t.clientY,true);},{passive:false});
+window.addEventListener('touchend',e=>{for(let t of e.changedTouches)updatePtr(t.identifier,t.clientX,t.clientY,false);});
+
+let hue=Math.random();
+function genColor(){ hue=(hue+0.02)%1; if(C.CM==='rainbow'){ const h6=hue*6,i=Math.floor(h6),f=h6-i; const cols=[[1,f,0],[1-f,1,0],[0,1,f],[0,1-f,1],[f,0,1],[1,0,1-f]]; return cols[i].map(v=>v*3); } return C.CM==='custom'?C.CC.map(v=>v*3):[2,2,2]; }
+
+function splat(x,y,dx,dy,col,radMult=1.0){
+  const asp=canvas.width/canvas.height; gl.disable(gl.BLEND); gl.useProgram(PR.splat.p);
+  gl.uniform1f(PR.splat.u.asp,asp); gl.uniform1f(PR.splat.u.rad,C.RADIUS*radMult*(asp>1?asp:1));
+  gl.uniform2f(PR.splat.u.pt,x,y); gl.uniform1i(PR.splat.u.uT,vel.read.bind(0)); gl.uniform3f(PR.splat.u.col,dx,dy,0); blit(vel.write); vel.swap();
+  gl.uniform1i(PR.splat.u.uT,dye.read.bind(0)); gl.uniform3f(PR.splat.u.col,col[0],col[1],col[2]); blit(dye.write); dye.swap();
 }
 
-// ═══════════════════════════════
-//  COLOR
-// ═══════════════════════════════
-let hue = Math.random();
-function genColor() {
-  hue = (hue + 0.012 + Math.random()*0.015) % 1;
-  if (C.CM === 'rainbow') {
-    const h6=hue*6,i=Math.floor(h6),f=h6-i;
-    const cols=[[1,f,0],[1-f,1,0],[0,1,f],[0,1-f,1],[f,0,1],[1,0,1-f]];
-    return cols[i].map(v=>v*3);
+let lastT=performance.now(), autoT=0;
+function loop(now){
+  const dt=Math.min((now-lastT)/1000,0.0166); lastT=now;
+  for(let i=pointers.length-1;i>=0;i--){
+    const p=pointers[i]; if(p.down){
+      let dx=(p.x-p.prevX)*C.FORCE, dy=(p.y-p.prevY)*C.FORCE;
+      if(Math.abs(dx)<0.1) dx=0; if(Math.abs(dy)<0.1) dy=0;
+      splat(p.x,p.y,dx,dy,(dx===0&&dy===0)?p.col.map(v=>v*0.2):p.col);
+      p.prevX=p.x; p.prevY=p.y;
+    } else { pointers.splice(i,1); delete ptrMap[p.id]; }
   }
-  if (C.CM === 'custom') {
-    return C.CC.map(v=>(v+(Math.random()-.5)*.15)*3);
-  }
-  if (C.CM === 'fire') {
-    const t=Math.random(); return [t*3, t*t*1, 0];
-  }
-  const v=(.5+Math.random()*.5)*3; return [v,v,v];
-}
+  if(C.AUTO){ autoT+=dt; if(autoT>1/C.ARATE){ autoT=0; for(let i=0;i<C.ACOUNT;i++) splat(Math.random(),Math.random(),(Math.random()-.5)*C.FORCE,(Math.random()-.5)*C.FORCE,genColor(),3.0); } }
 
-// ═══════════════════════════════
-//  SPLAT  (all in 0-1 UV space)
-// ═══════════════════════════════
-function splat(x, y, dx, dy, col) {
-  const asp = canvas.width / canvas.height;
-  const rad = C.RADIUS * (asp>1 ? asp : 1);
   gl.disable(gl.BLEND);
-  gl.useProgram(PR.splat.p);
-  gl.uniform1f(PR.splat.u.asp, asp);
-  gl.uniform1f(PR.splat.u.rad, rad);
-  // velocity splat
-  gl.uniform1i(PR.splat.u.uT, vel.read.bind(0));
-  gl.uniform2f(PR.splat.u.pt, x, y);
-  gl.uniform3f(PR.splat.u.col, dx, dy, 0);
-  blit(vel.write); vel.swap();
-  // dye splat
-  gl.uniform1i(PR.splat.u.uT, dye.read.bind(0));
-  gl.uniform3f(PR.splat.u.col, col[0], col[1], col[2]);
-  blit(dye.write); dye.swap();
-}
+  gl.useProgram(PR.curl.p); gl.uniform2f(PR.curl.u.tSz,vel.read.tsx,vel.read.tsy); gl.uniform1i(PR.curl.u.uV,vel.read.bind(0)); blit(Curl);
+  gl.useProgram(PR.vort.p); gl.uniform2f(PR.vort.u.tSz,vel.read.tsx,vel.read.tsy); gl.uniform1i(PR.vort.u.uV,vel.read.bind(0)); gl.uniform1i(PR.vort.u.uC,Curl.bind(1)); gl.uniform1f(PR.vort.u.curl,C.CURL); gl.uniform1f(PR.vort.u.dt,dt); blit(vel.write); vel.swap();
+  gl.useProgram(PR.div.p); gl.uniform2f(PR.div.u.tSz,vel.read.tsx,vel.read.tsy); gl.uniform1i(PR.div.u.uV,vel.read.bind(0)); blit(Div);
+  gl.useProgram(PR.clear.p); gl.uniform1i(PR.clear.u.u,Pres.read.bind(0)); gl.uniform1f(PR.clear.u.val,0.8); blit(Pres.write); Pres.swap();
+  gl.useProgram(PR.pres.p); gl.uniform2f(PR.pres.u.tSz,vel.read.tsx,vel.read.tsy); gl.uniform1i(PR.pres.u.uD,Div.bind(0));
+  for(let i=0;i<C.PITER;i++){ gl.uniform1i(PR.pres.u.uP,Pres.read.bind(1)); blit(Pres.write); Pres.swap(); }
+  gl.useProgram(PR.grad.p); gl.uniform2f(PR.grad.u.tSz,vel.read.tsx,vel.read.tsy); gl.uniform1i(PR.grad.u.uP,Pres.read.bind(0)); gl.uniform1i(PR.grad.u.uV,vel.read.bind(1)); blit(vel.write); vel.swap();
+  gl.useProgram(PR.adv.p); gl.uniform2f(PR.adv.u.tSz,vel.read.tsx,vel.read.tsy); gl.uniform2f(PR.adv.u.dSz,vel.read.tsx,vel.read.tsy); gl.uniform1i(PR.adv.u.uV,vel.read.bind(0)); gl.uniform1i(PR.adv.u.uS,vel.read.bind(0)); gl.uniform1f(PR.adv.u.dt,dt); gl.uniform1f(PR.adv.u.diss,C.VDISS); blit(vel.write); vel.swap();
+  gl.uniform2f(PR.adv.u.dSz,dye.read.tsx,dye.read.tsy); gl.uniform1i(PR.adv.u.uV,vel.read.bind(0)); gl.uniform1i(PR.adv.u.uS,dye.read.bind(1)); gl.uniform1f(PR.adv.u.diss,C.DISS); blit(dye.write); dye.swap();
 
-function randomSplats(n) {
-  for (let i=0;i<n;i++)
-    splat(Math.random(), Math.random(),
-      (Math.random()-.5)*C.FORCE,
-      (Math.random()-.5)*C.FORCE,
-      genColor());
-}
-
-// ═══════════════════════════════
-//  INPUT — coords in 0-1 UV
-// ═══════════════════════════════
-// canvasUV converts browser clientX/Y → UV coords for the fluid simulation.
-// We use getBoundingClientRect() which gives the canvas CSS size and position.
-// UV x goes 0→1 left→right, UV y goes 1→0 top→bottom (WebGL convention).
-function clientToUV(clientX, clientY) {
-  const r = canvas.getBoundingClientRect();
-  return {
-    x: (clientX - r.left) / r.width,
-    y: 1.0 - (clientY - r.top) / r.height
-  };
-}
-
-// Store active pointers: id → {x, y, col}
-const ptrs = new Map();
-
-function onDown(id, cx, cy) {
-  const uv = clientToUV(cx, cy);
-  ptrs.set(id, { x:uv.x, y:uv.y, col:genColor() });
-}
-
-function onMove(id, cx, cy) {
-  const p = ptrs.get(id);
-  if (!p) return;
-  const uv = clientToUV(cx, cy);
-  const dx = (uv.x - p.x) * C.FORCE;
-  const dy = (uv.y - p.y) * C.FORCE;
-  splat(uv.x, uv.y, dx, dy, p.col);
-  p.x = uv.x; p.y = uv.y;
-}
-
-function onUp(id) { ptrs.delete(id); }
-
-// Mouse
-canvas.addEventListener('mousedown',  e => onDown('m', e.clientX, e.clientY));
-canvas.addEventListener('mousemove',  e => { if(ptrs.has('m')) onMove('m', e.clientX, e.clientY); });
-window.addEventListener('mouseup',    ()=> onUp('m'));
-
-// Touch — ALWAYS use changedTouches and match by .identifier
-canvas.addEventListener('touchstart', e => {
-  e.preventDefault();
-  for (const t of e.changedTouches) onDown(t.identifier, t.clientX, t.clientY);
-}, {passive:false});
-
-canvas.addEventListener('touchmove', e => {
-  e.preventDefault();
-  for (const t of e.changedTouches) onMove(t.identifier, t.clientX, t.clientY);
-}, {passive:false});
-
-window.addEventListener('touchend',    e => { for (const t of e.changedTouches) onUp(t.identifier); });
-window.addEventListener('touchcancel', e => { for (const t of e.changedTouches) onUp(t.identifier); });
-
-// ═══════════════════════════════
-//  SHAKE
-// ═══════════════════════════════
-let lastA={x:0,y:0,z:0}, lastShakeT=0, shakeBuf=[];
-const sflash=document.getElementById('sflash');
-
-function doShake() {
-  const now=Date.now(); if(now-lastShakeT<800) return; lastShakeT=now;
-  randomSplats(20+Math.floor(Math.random()*20));
-  for(let i=0;i<10;i++){
-    const a=Math.random()*Math.PI*2, f=C.FORCE*4;
-    gl.useProgram(PR.splat.p);
-    gl.uniform1f(PR.splat.u.asp, canvas.width/canvas.height);
-    gl.uniform1f(PR.splat.u.rad, C.RADIUS*5);
-    gl.uniform1i(PR.splat.u.uT, vel.read.bind(0));
-    gl.uniform2f(PR.splat.u.pt, Math.random(), Math.random());
-    gl.uniform3f(PR.splat.u.col, Math.cos(a)*f, Math.sin(a)*f, 0);
-    blit(vel.write); vel.swap();
+  if(C.BLOOM){
+    gl.useProgram(PR.bpre.p); gl.uniform3f(PR.bpre.u.curve,C.BLOOM_THRESH-0.1,0.2,2.5); gl.uniform1f(PR.bpre.u.thresh,C.BLOOM_THRESH); gl.uniform1i(PR.bpre.u.u,dye.read.bind(0)); blit(bloom);
+    gl.useProgram(PR.blur.p); let last=bloom; for(let fb of bloomFBOs){ gl.uniform2f(PR.blur.u.tSz,last.tsx,last.tsy); gl.uniform1i(PR.blur.u.u,last.bind(0)); blit(fb); last=fb; }
+    gl.useProgram(PR.bfin.p); gl.uniform1f(PR.bfin.u.intensity,C.BLOOM_INT); gl.uniform1i(PR.bfin.u.u,last.bind(0)); blit(bloom);
   }
-  sflash.classList.add('pop');
-  setTimeout(()=>sflash.classList.remove('pop'), 120);
-}
-
-function attachMotion() {
-  window.addEventListener('devicemotion', e => {
-    const a=e.accelerationIncludingGravity; if(!a) return;
-    const d=Math.abs((a.x||0)-lastA.x)+Math.abs((a.y||0)-lastA.y)+Math.abs((a.z||0)-lastA.z);
-    lastA={x:a.x||0,y:a.y||0,z:a.z||0};
-    shakeBuf.push(d); if(shakeBuf.length>5) shakeBuf.shift();
-    if(Math.max(...shakeBuf)>30) doShake();
-  });
-}
-
-let motReq=false;
-function reqMotion() {
-  if(motReq) return; motReq=true;
-  if(typeof DeviceMotionEvent!=='undefined' && typeof DeviceMotionEvent.requestPermission==='function')
-    DeviceMotionEvent.requestPermission().then(s=>{if(s==='granted')attachMotion();}).catch(()=>{});
-  else attachMotion();
-}
-window.addEventListener('touchstart', reqMotion, {once:true});
-reqMotion();
-
-// ═══════════════════════════════
-//  SIMULATION STEP
-// ═══════════════════════════════
-function step(dt) {
-  gl.disable(gl.BLEND);
-
-  gl.useProgram(PR.curl.p);
-  gl.uniform2f(PR.curl.u.tSz, vel.read.tsx, vel.read.tsy);
-  gl.uniform1i(PR.curl.u.uV, vel.read.bind(0));
-  blit(Curl);
-
-  gl.useProgram(PR.vort.p);
-  gl.uniform2f(PR.vort.u.tSz, vel.read.tsx, vel.read.tsy);
-  gl.uniform1i(PR.vort.u.uV, vel.read.bind(0));
-  gl.uniform1i(PR.vort.u.uC, Curl.bind(1));
-  gl.uniform1f(PR.vort.u.curl, C.CURL);
-  gl.uniform1f(PR.vort.u.dt, dt);
-  blit(vel.write); vel.swap();
-
-  gl.useProgram(PR.div.p);
-  gl.uniform2f(PR.div.u.tSz, vel.read.tsx, vel.read.tsy);
-  gl.uniform1i(PR.div.u.uV, vel.read.bind(0));
-  blit(Div);
-
-  gl.useProgram(PR.clear.p);
-  gl.uniform1i(PR.clear.u.u, Pres.read.bind(0));
-  gl.uniform1f(PR.clear.u.val, 0.8);
-  blit(Pres.write); Pres.swap();
-
-  gl.useProgram(PR.pres.p);
-  gl.uniform2f(PR.pres.u.tSz, vel.read.tsx, vel.read.tsy);
-  gl.uniform1i(PR.pres.u.uD, Div.bind(0));
-  for(let i=0;i<C.PITER;i++){
-    gl.uniform1i(PR.pres.u.uP, Pres.read.bind(1));
-    blit(Pres.write); Pres.swap();
-  }
-
-  gl.useProgram(PR.grad.p);
-  gl.uniform2f(PR.grad.u.tSz, vel.read.tsx, vel.read.tsy);
-  gl.uniform1i(PR.grad.u.uP, Pres.read.bind(0));
-  gl.uniform1i(PR.grad.u.uV, vel.read.bind(1));
-  blit(vel.write); vel.swap();
-
-  gl.useProgram(PR.adv.p);
-  gl.uniform2f(PR.adv.u.tSz, vel.read.tsx, vel.read.tsy);
-  gl.uniform2f(PR.adv.u.dSz, vel.read.tsx, vel.read.tsy);
-  gl.uniform1i(PR.adv.u.uV, vel.read.bind(0));
-  gl.uniform1i(PR.adv.u.uS, vel.read.bind(0));
-  gl.uniform1f(PR.adv.u.dt, dt);
-  gl.uniform1f(PR.adv.u.diss, C.VDISS);
-  blit(vel.write); vel.swap();
-
-  gl.uniform2f(PR.adv.u.dSz, dye.read.tsx, dye.read.tsy);
-  gl.uniform1i(PR.adv.u.uV, vel.read.bind(0));
-  gl.uniform1i(PR.adv.u.uS, dye.read.bind(1));
-  gl.uniform1f(PR.adv.u.diss, C.DISS);
-  blit(dye.write); dye.swap();
-}
-
-// ═══════════════════════════════
-//  POST-PROCESS + RENDER
-// ═══════════════════════════════
-function applyBloom() {
-  if(!bloomFBOs.length) return;
-  const knee=C.BLOOM_THRESH*C.BLOOM_SOFT+.0001;
-  gl.disable(gl.BLEND);
-  gl.useProgram(PR.bpre.p);
-  gl.uniform3f(PR.bpre.u.curve, C.BLOOM_THRESH-knee, knee*2, .25/knee);
-  gl.uniform1f(PR.bpre.u.thresh, C.BLOOM_THRESH);
-  gl.uniform1i(PR.bpre.u.u, dye.read.bind(0));
-  blit(bloom);
-
-  gl.useProgram(PR.blur.p);
-  let last=bloom;
-  for(const fb of bloomFBOs){
-    gl.uniform2f(PR.blur.u.tSz, last.tsx, last.tsy);
-    gl.uniform1i(PR.blur.u.u, last.bind(0));
-    blit(fb); last=fb;
-  }
-  gl.blendFunc(gl.ONE,gl.ONE); gl.enable(gl.BLEND);
-  for(let i=bloomFBOs.length-2;i>=0;i--){
-    const fb=bloomFBOs[i];
-    gl.uniform2f(PR.blur.u.tSz, last.tsx, last.tsy);
-    gl.uniform1i(PR.blur.u.u, last.bind(0));
-    blit(fb); last=fb;
-  }
-  gl.disable(gl.BLEND);
-  gl.useProgram(PR.bfin.p);
-  gl.uniform2f(PR.bfin.u.tSz, last.tsx, last.tsy);
-  gl.uniform1i(PR.bfin.u.u, last.bind(0));
-  gl.uniform1f(PR.bfin.u.intensity, C.BLOOM_INT);
-  blit(bloom);
-}
-
-function applySunrays() {
-  gl.disable(gl.BLEND);
-  gl.useProgram(PR.smask.p);
-  gl.uniform1i(PR.smask.u.u, dye.read.bind(0));
-  blit(sunraysT);
-  gl.useProgram(PR.srays.p);
-  gl.uniform1f(PR.srays.u.wt, C.SUN_WT);
-  gl.uniform1i(PR.srays.u.u, sunraysT.bind(0));
-  blit(sunrays);
-  gl.useProgram(PR.blur.p);
-  gl.uniform2f(PR.blur.u.tSz, sunrays.tsx, 0);
-  gl.uniform1i(PR.blur.u.u, sunrays.bind(0));
-  blit(sunraysT);
-  gl.uniform2f(PR.blur.u.tSz, 0, sunrays.tsy);
-  gl.uniform1i(PR.blur.u.u, sunraysT.bind(0));
-  blit(sunrays);
-}
-
-function render() {
-  if(C.BLOOM)  applyBloom();
-  if(C.SUN)    applySunrays();
-  gl.disable(gl.BLEND);
-  gl.useProgram(PR.disp.p);
-  gl.uniform2f(PR.disp.u.tSz, 1/gl.drawingBufferWidth, 1/gl.drawingBufferHeight);
-  gl.uniform1i(PR.disp.u.uTex,   dye.read.bind(0));
-  gl.uniform1i(PR.disp.u.uBloom, bloom    ? bloom.bind(1)   : 1);
-  gl.uniform1i(PR.disp.u.uSun,   sunrays  ? sunrays.bind(2) : 2);
-  // WebGL1 uses int for bool uniforms
-  gl.uniform1i(PR.disp.u.doBloom, C.BLOOM  ? 1:0);
-  gl.uniform1i(PR.disp.u.doSun,   C.SUN    ? 1:0);
-  gl.uniform1i(PR.disp.u.doShade, C.SHADE  ? 1:0);
-  blit(null);
-}
-
-// ═══════════════════════════════
-//  MAIN LOOP
-// ═══════════════════════════════
-let lastT=performance.now(), autoT=0, fpsT=0, fpsN=0;
-const fpsEl=document.getElementById('fps');
-
-resizeCanvas(); initFBOs(); randomSplats(5);
-
-(function loop(now) {
+  gl.useProgram(PR.disp.p); gl.uniform2f(PR.disp.u.tSz,dye.read.tsx,dye.read.tsy); gl.uniform1i(PR.disp.u.uTex,dye.read.bind(0)); gl.uniform1i(PR.disp.u.uBloom,bloom.bind(1)); gl.uniform1i(PR.disp.u.doBloom,C.BLOOM?1:0); gl.uniform1i(PR.disp.u.doShade,C.SHADE?1:0); blit(null);
   requestAnimationFrame(loop);
-  const dt=Math.min((now-lastT)/1000, 0.016667);
-  lastT=now;
-  step(dt);
-  if(C.AUTO){autoT+=dt; if(autoT>1/C.ARATE){autoT=0;randomSplats(C.ACOUNT);}}
-  render();
-  fpsN++; fpsT+=dt;
-  if(fpsT>=0.5){fpsEl.textContent=Math.round(fpsN/fpsT)+' fps';fpsN=0;fpsT=0;}
-})(lastT);
-
-window.addEventListener('resize', ()=>resizeCanvas());
-
-// ═══════════════════════════════
-//  UI
-// ═══════════════════════════════
-document.getElementById('tb').addEventListener('click', ()=>document.getElementById('panel').classList.toggle('hidden'));
-
-function mkSlider(sid, key, dp) {
-  const el=document.getElementById('s-'+sid), vl=document.getElementById('v-'+sid);
-  if(!el||!vl) return;
-  el.addEventListener('input', ()=>{ C[key]=parseFloat(el.value); vl.textContent=C[key].toFixed(dp); });
 }
-mkSlider('vdiss','VDISS',3); mkSlider('diss','DISS',3); mkSlider('curl','CURL',0);
-mkSlider('pres','PITER',0); mkSlider('rad','RADIUS',4); mkSlider('force','FORCE',0);
-mkSlider('bth','BLOOM_THRESH',2); mkSlider('arate','ARATE',1); mkSlider('acount','ACOUNT',0);
 
-function mkToggle(sid, key) {
-  const el=document.getElementById('sw-'+sid); if(!el) return;
-  el.addEventListener('click', ()=>{ el.classList.toggle('on'); C[key]=el.classList.contains('on'); });
-}
-mkToggle('bloom','BLOOM'); mkToggle('shade','SHADE'); mkToggle('sun','SUN'); mkToggle('auto','AUTO');
+window.addEventListener('resize', ()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; initFBOs(); });
+canvas.width=window.innerWidth; canvas.height=window.innerHeight; initFBOs(); requestAnimationFrame(loop);
 
-document.querySelectorAll('[data-cm]').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('[data-cm]').forEach(x=>x.classList.remove('on'));
-  b.classList.add('on'); C.CM=b.dataset.cm;
-}));
-
-function setCustomColor(hex) {
-  C.CC=[parseInt(hex.slice(1,3),16)/255, parseInt(hex.slice(3,5),16)/255, parseInt(hex.slice(5,7),16)/255];
-  C.CM='custom';
-  document.querySelectorAll('[data-cm]').forEach(x=>x.classList.remove('on'));
-  document.querySelector('[data-cm="custom"]').classList.add('on');
-}
-document.querySelectorAll('[data-c]').forEach(sw=>{
-  sw.addEventListener('click',()=>{
-    document.querySelectorAll('[data-c]').forEach(x=>x.classList.remove('on'));
-    sw.classList.add('on'); setCustomColor(sw.dataset.c);
-  });
-});
-document.getElementById('cpick').addEventListener('input', e=>setCustomColor(e.target.value));
-
-const PRESETS={
-  ink:      {CM:'custom',CC:[.1,.2,1],CURL:5,DISS:.97,ACOUNT:1,ARATE:.3},
-  fire:     {CM:'fire',CURL:30,DISS:.95,VDISS:.96,ACOUNT:5,ARATE:2},
-  electric: {CM:'rainbow',CURL:40,DISS:.97,FORCE:9000,ACOUNT:8,ARATE:1.5},
-  pastel:   {CM:'rainbow',CURL:4,DISS:.995,ACOUNT:3,ARATE:.5},
-  neon:     {CM:'rainbow',CURL:25,DISS:.96,BLOOM_THRESH:.2,ACOUNT:6,ARATE:1.2},
-  oil:      {CM:'rainbow',CURL:8,DISS:.999,VDISS:.999,ACOUNT:2,ARATE:.4},
-};
-document.getElementById('sel-preset').addEventListener('change', e=>{
-  const p=PRESETS[e.target.value]; if(!p) return;
-  Object.assign(C,p);
-  const sync=(sid,key,dp)=>{const el=document.getElementById('s-'+sid),vl=document.getElementById('v-'+sid);if(el&&vl&&C[key]!=null){el.value=C[key];vl.textContent=parseFloat(C[key]).toFixed(dp);}};
-  sync('diss','DISS',3); sync('curl','CURL',0); sync('arate','ARATE',1); sync('acount','ACOUNT',0);
-  if(C.CM) document.querySelectorAll('[data-cm]').forEach(b=>b.classList.toggle('on',b.dataset.cm===C.CM));
-});
-
-document.getElementById('btn-splat').addEventListener('click', ()=>randomSplats(8+Math.floor(Math.random()*8)));
-document.getElementById('btn-clear').addEventListener('click', ()=>{
-  gl.useProgram(PR.clear.p); gl.uniform1f(PR.clear.u.val,0);
-  gl.uniform1i(PR.clear.u.u, dye.read.bind(0)); blit(dye.write); dye.swap();
-  gl.uniform1i(PR.clear.u.u, dye.read.bind(0)); blit(dye.write); dye.swap();
-  gl.uniform1i(PR.clear.u.u, vel.read.bind(0)); blit(vel.write); vel.swap();
-  gl.uniform1i(PR.clear.u.u, vel.read.bind(0)); blit(vel.write); vel.swap();
-});
+// UI Logic
+document.getElementById('tb').onclick=()=>document.getElementById('panel').classList.toggle('hidden');
+document.getElementById('btn-clear').onclick=()=>initFBOs();
+document.getElementById('btn-splat').onclick=()=> { for(let i=0;i<10;i++) splat(Math.random(),Math.random(),(Math.random()-.5)*C.FORCE,(Math.random()-.5)*C.FORCE,genColor(),3.0); };
+function sync(id,k,d){ const el=document.getElementById('s-'+id),v=document.getElementById('v-'+id); el.oninput=()=>{ C[k]=parseFloat(el.value); v.textContent=C[k].toFixed(d); }; }
+sync('vdiss','VDISS',3); sync('diss','DISS',3); sync('curl','CURL',0); sync('pres','PITER',0); sync('rad','RADIUS',4); sync('force','FORCE',0); sync('bth','BLOOM_THRESH',2); sync('arate','ARATE',1); sync('acount','ACOUNT',0);
+const toggs=['bloom','shade','sun','auto']; const keys=['BLOOM','SHADE','SUN','AUTO'];
+toggs.forEach((id,i)=>{ const el=document.getElementById('sw-'+id); el.onclick=()=>{ el.classList.toggle('on'); C[keys[i]]=el.classList.contains('on'); }; });
 </script>
-
 </body>
 </html>
