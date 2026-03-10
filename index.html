@@ -100,8 +100,8 @@ select:focus{border-color:var(–accent)}
 
 <div class="sec">
   <div class="st">Simulation</div>
-  <div class="row"><label>Vel Dissipation</label><input type="range" id="s-vdiss" min="0.9" max="1.0" step="0.002" value="0.99"><span class="v" id="v-vdiss">0.99</span></div>
-  <div class="row"><label>Dye Dissipation</label><input type="range" id="s-diss" min="0.9" max="1.0" step="0.002" value="0.98"><span class="v" id="v-diss">0.98</span></div>
+  <div class="row"><label>Vel Dissipation</label><input type="range" id="s-vdiss" min="0.9" max="1.0" step="0.001" value="0.999"><span class="v" id="v-vdiss">0.999</span></div>
+  <div class="row"><label>Dye Dissipation</label><input type="range" id="s-diss" min="0.9" max="1.0" step="0.001" value="0.995"><span class="v" id="v-diss">0.995</span></div>
   <div class="row"><label>Vorticity</label><input type="range" id="s-curl" min="0" max="50" step="1" value="15"><span class="v" id="v-curl">15</span></div>
   <div class="row"><label>Pressure</label><input type="range" id="s-pres" min="4" max="50" step="1" value="20"><span class="v" id="v-pres">20</span></div>
   <div class="row"><label>Splat Size</label><input type="range" id="s-rad" min="0.001" max="0.015" step="0.001" value="0.005"><span class="v" id="v-rad">0.005</span></div>
@@ -165,8 +165,8 @@ select:focus{border-color:var(–accent)}
 const C = {
   SIM_RES: 128,
   DYE_RES: 1024,
-  DISS: 0.98,        // dye dissipation
-  VDISS: 0.99,       // velocity dissipation
+  DISS: 0.995,        // dye dissipation
+  VDISS: 0.999,       // velocity dissipation
   PITER: 20,         // pressure iterations
   CURL: 15,
   RADIUS: 0.005,     // splat radius (UV units)
@@ -273,7 +273,10 @@ vec4 bil(sampler2D s,vec2 uv,vec2 sz){
   vec4 a=texture2D(s,(i+vec2(.5,.5))*sz),b=texture2D(s,(i+vec2(1.5,.5))*sz);
   vec4 c=texture2D(s,(i+vec2(.5,1.5))*sz),d=texture2D(s,(i+vec2(1.5,1.5))*sz);
   return mix(mix(a,b,f.x),mix(c,d,f.x),f.y);}
-void main(){vec2 pos=vUv-dt*bil(uV,vUv,tSz).xy*tSz;gl_FragColor=bil(uS,pos,dSz)/(1.+diss*dt);}`),
+void main(){
+  vec2 pos=vUv-dt*bil(uV,vUv,tSz).xy*tSz;
+  // diss is a per-frame keep fraction (e.g. 0.99 = keep 99% each frame at 60fps)
+  gl_FragColor=bil(uS,pos,dSz)*pow(diss,dt*60.0);}`),
 
   div: mkProg(VS, `precision mediump float;precision mediump sampler2D;
 varying vec2 vL,vR,vT,vB;uniform sampler2D uV;
@@ -388,13 +391,11 @@ function getRes(target) {
 
 function initFBOs() {
   const sr=getRes(C.SIM_RES), dr=getRes(C.DYE_RES), br=getRes(C.BLOOM_RES), xr=getRes(C.SUN_RES);
-  if (!dye) {
-    dye  = makeDouble(dr.w,dr.h,RGBA.i,RGBA.f,LIN);
-    vel  = makeDouble(sr.w,sr.h,RG.i,  RG.f,  LIN);
-    Div  = makeFBO(sr.w,sr.h,R.i,R.f,gl.NEAREST);
-    Curl = makeFBO(sr.w,sr.h,R.i,R.f,gl.NEAREST);
-    Pres = makeDouble(sr.w,sr.h,R.i,R.f,gl.NEAREST);
-  }
+  dye  = makeDouble(dr.w,dr.h,RGBA.i,RGBA.f,LIN);
+  vel  = makeDouble(sr.w,sr.h,RG.i,  RG.f,  LIN);
+  Div  = makeFBO(sr.w,sr.h,R.i,R.f,gl.NEAREST);
+  Curl = makeFBO(sr.w,sr.h,R.i,R.f,gl.NEAREST);
+  Pres = makeDouble(sr.w,sr.h,R.i,R.f,gl.NEAREST);
   bloom=makeFBO(br.w,br.h,RGBA.i,RGBA.f,LIN);
   bloomFBOs=[];
   for(let i=0;i<C.BLOOM_ITER;i++){const bw=br.w>>(i+1),bh=br.h>>(i+1);if(bw<2||bh<2)break;bloomFBOs.push(makeFBO(bw,bh,RGBA.i,RGBA.f,LIN));}
@@ -406,9 +407,13 @@ function resizeCanvas() {
   const dpr = Math.min(window.devicePixelRatio||1, 2);
   const w = Math.round(canvas.clientWidth*dpr);
   const h = Math.round(canvas.clientHeight*dpr);
-  if (canvas.width!==w || canvas.height!==h) {
+  // Only resize if change is more than 2px to avoid mobile browser chrome jitter
+  if (Math.abs(canvas.width-w) > 2 || Math.abs(canvas.height-h) > 2) {
     canvas.width=w; canvas.height=h;
-    initFBOs(); return true;
+    // Fully reset all FBOs on a real resize
+    dye=null; vel=null;
+    initFBOs();
+    return true;
   }
   return false;
 }
