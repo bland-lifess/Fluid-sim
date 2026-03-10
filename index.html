@@ -139,8 +139,8 @@ select:focus{border-color:var(–accent)}
 <div class="sec">
   <div class="st">Auto Splat</div>
   <div class="tog"><label>Enabled</label><div class="sw on" id="sw-auto"></div></div>
-  <div class="row"><label>Rate (Hz)</label><input type="range" id="s-arate" min="0.2" max="4" step="0.1" value="1.0"><span class="v" id="v-arate">1.0</span></div>
-  <div class="row"><label>Count</label><input type="range" id="s-acount" min="1" max="15" step="1" value="3"><span class="v" id="v-acount">3</span></div>
+  <div class="row"><label>Rate (Hz)</label><input type="range" id="s-arate" min="0.1" max="2" step="0.1" value="0.3"><span class="v" id="v-arate">0.3</span></div>
+  <div class="row"><label>Count</label><input type="range" id="s-acount" min="1" max="10" step="1" value="1"><span class="v" id="v-acount">1</span></div>
 </div>
 
 <div class="sec">
@@ -174,7 +174,7 @@ const C = {
   BLOOM: true, BLOOM_ITER:8, BLOOM_RES:256, BLOOM_THRESH:0.6, BLOOM_SOFT:0.7, BLOOM_INT:0.8,
   SHADE: true,
   SUN: true, SUN_RES:196, SUN_WT:1.0,
-  AUTO: true, ARATE:1.0, ACOUNT:3,
+  AUTO: true, ARATE:0.3, ACOUNT:1,
   CM: 'rainbow',       // rainbow | custom | fire | mono
   CC: [0, 0.9, 1],     // custom color RGB 0-1
 };
@@ -422,15 +422,15 @@ function genColor() {
   if (C.CM === 'rainbow') {
     const h6=hue*6,i=Math.floor(h6),f=h6-i;
     const cols=[[1,f,0],[1-f,1,0],[0,1,f],[0,1-f,1],[f,0,1],[1,0,1-f]];
-    return cols[i].map(v=>v*10);
+    return cols[i].map(v=>v*3);
   }
   if (C.CM === 'custom') {
-    return C.CC.map(v=>(v+(Math.random()-.5)*.15)*10);
+    return C.CC.map(v=>(v+(Math.random()-.5)*.15)*3);
   }
   if (C.CM === 'fire') {
-    const t=Math.random(); return [t*10, t*t*3, 0];
+    const t=Math.random(); return [t*3, t*t*1, 0];
   }
-  const v=(.5+Math.random()*.5)*10; return [v,v,v];
+  const v=(.5+Math.random()*.5)*3; return [v,v,v];
 }
 
 // ═══════════════════════════════
@@ -692,9 +692,10 @@ function render() {
 let lastT=performance.now(), autoT=0, fpsT=0, fpsN=0;
 const fpsEl=document.getElementById('fps');
 
+resizeCanvas(); initFBOs(); randomSplats(5);
+
 (function loop(now) {
   requestAnimationFrame(loop);
-  resizeCanvas();
   const dt=Math.min((now-lastT)/1000, 0.016667);
   lastT=now;
   step(dt);
@@ -704,7 +705,7 @@ const fpsEl=document.getElementById('fps');
   if(fpsT>=0.5){fpsEl.textContent=Math.round(fpsN/fpsT)+' fps';fpsN=0;fpsT=0;}
 })(lastT);
 
-resizeCanvas(); initFBOs(); randomSplats(8);
+window.addEventListener('resize', ()=>resizeCanvas());
 
 // ═══════════════════════════════
 //  UI
